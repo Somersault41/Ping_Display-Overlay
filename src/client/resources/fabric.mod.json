@@ -1,0 +1,27 @@
+{
+    "schemaVersion": 1,
+    "id": "pingdisplayoverlay",
+    "version": "${version}",
+    "name": "Ping Display+Overlay",
+    "description": "Customizable ping display and player heads in the tab list and HUD.",
+    "authors": ["Somersault41"],
+    "license": "MIT",
+    "contact": {
+        "homepage": "https://www.curseforge.com/minecraft/mc-mods/ping-display-overlay"
+    },
+    "icon": "assets/pingdisplayoverlay/icon.png",
+    "environment": "client",
+    "entrypoints": {
+        "client": ["com.pingdisplayoverlay.client.PingDisplayOverlayClient"],
+        "modmenu": ["com.pingdisplayoverlay.client.integration.ModMenuIntegration"]
+    },
+    "mixins": [
+        { "config": "pingdisplayoverlay.client.mixins.json", "environment": "client" }
+    ],
+    "depends": {
+        "fabricloader": ">=0.19.5",
+        "minecraft": "26.1.2",
+        "java": ">=25",
+        "fabric-api": "*"
+    }
+}

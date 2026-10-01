@@ -1,0 +1,69 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'eclipse'
+    id 'net.minecraftforge.gradle' version '[7.0.17,8)'
+}
+
+version = mod_version
+group = mod_group_id
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+
+base {
+    archivesName = mod_id
+}
+
+minecraft {
+    runs {
+        configureEach {
+            workingDir = layout.projectDirectory.dir('run')
+            systemProperty 'eventbus.api.strictRuntimeChecks', 'true'
+            systemProperty 'forge.enabledGameTestNamespaces', mod_id
+        }
+        register('client')
+    }
+}
+
+repositories {
+    minecraft.mavenizer(it)
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
+    mavenCentral()
+}
+
+dependencies {
+    implementation minecraft.dependency("net.minecraftforge:forge:${forge_version}")
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    archiveFileName = "Ping_Display+Overlay-Forge-${mod_version}-26.1.1.jar"
+    manifest {
+        attributes([
+            "MixinConfigs": "pingdisplayoverlay.mixins.json"
+        ])
+    }
+}
+
+def modProperties = [
+    "version": project.version,
+    "mod_id": mod_id,
+    "mod_name": mod_name,
+    "mod_license": mod_license,
+    "mod_authors": mod_authors,
+    "mod_description": mod_description,
+    "loader_version_range": loader_version_range,
+    "forge_version_range": forge_version_range,
+    "minecraft_version_range": minecraft_version_range
+]
+
+processResources {
+    inputs.properties modProperties
+    filesMatching("META-INF/mods.toml") {
+        expand modProperties
+    }
+}

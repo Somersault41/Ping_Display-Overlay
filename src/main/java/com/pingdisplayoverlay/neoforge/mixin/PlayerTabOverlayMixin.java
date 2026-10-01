@@ -24,6 +24,10 @@ import org.spongepowered.asm.mixin.Overwrite;
 @Mixin(PlayerTabOverlay.class)
 public class PlayerTabOverlayMixin {
 
+    /** Whether vanilla itself draws the heads (online-mode); captured each frame by the showHead redirect. */
+    @org.spongepowered.asm.mixin.Unique
+    private boolean pdo$online;
+
     @Shadow
     private static Identifier PING_UNKNOWN_SPRITE;
     @Shadow
@@ -84,6 +88,7 @@ public class PlayerTabOverlayMixin {
      */
     @Redirect(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;onlineMode()Z"))
     private boolean pdo$showHead(ClientPacketListener connection) {
+        pdo$online = connection.onlineMode();
         PingConfig cfg = PingConfig.get();
         if (!cfg.tabEnabled) {
             // Ana ayar (Etkinleştir) kapaliyken kafalar da kapali olmali, alt ayardan bagimsiz.
@@ -142,5 +147,18 @@ public class PlayerTabOverlayMixin {
             int color = PingTextUtil.withAlpha(rgb, cfg.tabPingOpacity);
             graphics.text(mc.font, text, numberX, yo, color);
         }
+    }
+
+    /**
+     * Hat (outer skin layer): on online-mode servers vanilla draws the heads itself, so leave it alone.
+     * Offline-mode: if tab + heads are on, follow the dedicated 'hat layer' setting; otherwise vanilla.
+     */
+    @Redirect(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerInfo;showHat()Z"))
+    private boolean pdo$showHat(net.minecraft.client.multiplayer.PlayerInfo info) {
+        PingConfig cfg = PingConfig.get();
+        if (cfg.tabEnabled && cfg.tabShowHeads && !pdo$online) {
+            return cfg.tabShowHat;
+        }
+        return info.showHat();
     }
 }

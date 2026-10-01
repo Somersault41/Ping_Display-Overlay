@@ -3,6 +3,7 @@ package com.pingdisplayoverlay.neoforge.gui;
 import com.pingdisplayoverlay.neoforge.config.PingConfig;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
@@ -94,6 +95,7 @@ public class PingConfigScreen extends Screen {
                 y = boolField(left, valueX, resetX, y, "pingdisplayoverlay.config.show_ping", cfg.tabShowPing, defaults.tabShowPing, v -> cfg.tabShowPing = v);
                 y = boolField(left, valueX, resetX, y, "pingdisplayoverlay.config.show_indicator", cfg.tabShowIndicator, defaults.tabShowIndicator, v -> cfg.tabShowIndicator = v);
                 y = boolField(left, valueX, resetX, y, "pingdisplayoverlay.config.show_heads", cfg.tabShowHeads, defaults.tabShowHeads, v -> cfg.tabShowHeads = v);
+                y = boolField(left, valueX, resetX, y, "pingdisplayoverlay.config.show_hat", cfg.tabShowHat, defaults.tabShowHat, v -> cfg.tabShowHat = v);
                 y = intField(left, valueX, resetX, y, "pingdisplayoverlay.config.head_opacity", cfg.tabHeadOpacity, defaults.tabHeadOpacity, v -> cfg.tabHeadOpacity = clampPct(v), null);
                 y = intField(left, valueX, resetX, y, "pingdisplayoverlay.config.ping_opacity", cfg.tabPingOpacity, defaults.tabPingOpacity, v -> cfg.tabPingOpacity = clampPct(v), null);
                 y = intField(left, valueX, resetX, y, "pingdisplayoverlay.config.tab_bg_opacity", cfg.tabBackgroundOpacity, defaults.tabBackgroundOpacity, v -> cfg.tabBackgroundOpacity = clampPct(v), null);
@@ -119,7 +121,10 @@ public class PingConfigScreen extends Screen {
     private interface BoolSetter { void set(boolean v); }
 
     private int intField(int left, int valueX, int resetX, int y, String key, int value, int defaultValue, IntSetter setter, @Nullable String tooltipKey) {
-        StringWidget label = new StringWidget(left, y + 6, LABEL_WIDTH, this.font.lineHeight, Component.translatable(key), this.font);
+        final int rowTop = y;
+        final int rowH = pdoRowHeight(key);
+        y = rowTop + (rowH - 20) / 2;
+        MultiLineTextWidget label = pdoLabel(left, rowTop, rowH, key);
         if (tooltipKey != null) {
             label.setTooltip(Tooltip.create(Component.translatable(tooltipKey)));
         }
@@ -149,11 +154,14 @@ public class PingConfigScreen extends Screen {
             } catch (NumberFormatException ignored) {
             }
         });
-        return y + ROW_HEIGHT;
+        return rowTop + rowH + 4;
     }
 
     private int colorField(int left, int valueX, int resetX, int y, String key, int value, int defaultValue, IntSetter setter) {
-        addRenderableWidget(new StringWidget(left, y + 6, LABEL_WIDTH, this.font.lineHeight, Component.translatable(key), this.font));
+        final int rowTop = y;
+        final int rowH = pdoRowHeight(key);
+        y = rowTop + (rowH - 20) / 2;
+        addRenderableWidget(pdoLabel(left, rowTop, rowH, key));
 
         EditBox box = new EditBox(this.font, valueX, y, VALUE_WIDTH, 20, Component.translatable(key));
         box.setValue(String.format("%06X", value & 0xFFFFFF));
@@ -176,7 +184,7 @@ public class PingConfigScreen extends Screen {
             } catch (NumberFormatException ignored) {
             }
         });
-        return y + ROW_HEIGHT;
+        return rowTop + rowH + 4;
     }
 
     private static Component boolLabel(boolean v) {
@@ -186,7 +194,10 @@ public class PingConfigScreen extends Screen {
     }
 
     private int boolField(int left, int valueX, int resetX, int y, String key, boolean initial, boolean defaultValue, BoolSetter setter) {
-        addRenderableWidget(new StringWidget(left, y + 6, LABEL_WIDTH, this.font.lineHeight, Component.translatable(key), this.font));
+        final int rowTop = y;
+        final int rowH = pdoRowHeight(key);
+        y = rowTop + (rowH - 20) / 2;
+        addRenderableWidget(pdoLabel(left, rowTop, rowH, key));
 
         final boolean[] state = { initial };
         final Button[] holder = new Button[1];
@@ -207,7 +218,19 @@ public class PingConfigScreen extends Screen {
         holder[0] = btn;
         addRenderableWidget(btn);
         addRenderableWidget(reset);
-        return y + ROW_HEIGHT;
+        return rowTop + rowH + 4;
+    }
+
+    /** Height of a row: tall enough for the wrapped label (min. one widget height). */
+    private int pdoRowHeight(String key) {
+        return Math.max(20, new MultiLineTextWidget(Component.translatable(key), this.font).setMaxWidth(LABEL_WIDTH).getHeight());
+    }
+
+    /** Wrapped label, vertically centered inside the row. */
+    private MultiLineTextWidget pdoLabel(int left, int rowTop, int rowH, String key) {
+        MultiLineTextWidget w = new MultiLineTextWidget(Component.translatable(key), this.font).setMaxWidth(LABEL_WIDTH);
+        w.setPosition(left, rowTop + (rowH - w.getHeight()) / 2);
+        return w;
     }
 
     @Override

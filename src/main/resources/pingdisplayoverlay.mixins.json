@@ -1,0 +1,12 @@
+{
+    "required": true,
+    "package": "com.pingdisplayoverlay.forge.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [],
+    "client": [
+        "PlayerTabOverlayMixin",
+        "ClientPacketListenerMixin",
+        "ModListInfoPanelMixin"
+    ],
+    "injectors": { "defaultRequire": 1 }
+}

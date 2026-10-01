@@ -23,6 +23,7 @@
     "pingdisplayoverlay.config.show_ping": "Show ping",
     "pingdisplayoverlay.config.show_indicator": "Show ping indicator",
     "pingdisplayoverlay.config.show_heads": "Show player heads",
+    "pingdisplayoverlay.config.show_hat": "Show hat layer on player heads",
     "pingdisplayoverlay.config.head_opacity": "Head opacity (%)",
     "pingdisplayoverlay.config.ping_opacity": "Ping opacity (%)",
     "pingdisplayoverlay.config.bg_opacity": "Ping background opacity (%)",

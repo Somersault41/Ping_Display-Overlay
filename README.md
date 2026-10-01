@@ -16,7 +16,7 @@ A client-side Minecraft mod that gives you full control over how ping is display
 - **Adjustable opacities** for heads, ping text/indicator, and tab background, independently for TAB and HUD.
 - **In-game settings screen**: three tabs (General / TAB / HUD), each with a master Enable toggle, live-apply on change, and a per-setting Reset button.
 - **Open settings**: press **Right Shift** in-game, or use the "Config" button in the mods list.
-- English is the default language. Add more languages by dropping a new `assets/pingdisplayoverlay/lang/<locale>.json` file, using the locale codes listed at [minecraft.wiki/w/Language](https://minecraft.wiki/w/Language) (e.g. `en_us` for English:).
+- English is the default language. Add more languages by dropping a new `assets/pingdisplayoverlay/lang/<locale>.json` file, using the locale codes listed at [minecraft.wiki/w/Language](https://minecraft.wiki/w/Language) (e.g. `en_us` for English).
 
 ## Dependencies
 

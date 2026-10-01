@@ -33,6 +33,7 @@ public class PingConfig {
     public boolean tabShowPing = true;
     public boolean tabShowIndicator = true;
     public boolean tabShowHeads = true;
+    public boolean tabShowHat = true;
     public int tabHeadOpacity = 100;
     public int tabPingOpacity = 100;
     public int tabBackgroundOpacity = 50;

@@ -1,0 +1,20 @@
+# Gradle
+.gradle/
+build/
+
+# Minecraft run/test folders
+run/
+
+# NeoForge generated mod metadata
+src/generated/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+out/
+bin/
+
+# OS
+.DS_Store
+Thumbs.db

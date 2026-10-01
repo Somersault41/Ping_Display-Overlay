@@ -1,0 +1,9 @@
+﻿{
+    "pack": {
+        "description": "Ping Display+Overlay resources",
+        "pack_format": 97,
+        "min_format": [97, 0],
+        "max_format": [97, 1]
+    }
+}
+

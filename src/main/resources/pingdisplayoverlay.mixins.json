@@ -1,0 +1,11 @@
+{
+    "required": true,
+    "package": "com.pingdisplayoverlay.neoforge.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [],
+    "client": [
+        "PlayerTabOverlayMixin",
+        "ClientPacketListenerMixin"
+    ],
+    "injectors": { "defaultRequire": 1 }
+}
